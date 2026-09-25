@@ -1,0 +1,7 @@
+# Environment variables / Secrets
+.env
+.env.local
+*.env
+
+# Dependency folder
+node_modules/

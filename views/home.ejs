@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div>
+            <h1>URL Shortener</h1>
+            <p>Create short, shareable links instantly.</p>
+        </div>
+
+       
+         <form action="/" method="GET">
+            <button type="submit" class="logout-btn">
+                Home
+            </button>
+        </form>
+
+         <% if(locals.role==="admin"){ %>
+      
+         <form action="/admin/urls" method="GET">
+            <button type="submit" class="logout-btn">
+               Admin Page
+            </button>
+        </form>
+
+    <% } %>
+
+         <form action="/user/logout" method="POST">
+            <button type="submit" class="logout-btn">
+                Logout
+            </button>
+        </form>
+   
+
+    </div>
+
+
+    <div class="card">
+
+        <form action="/url" method="POST" class="url-form">
+
+            <input
+                type="text"
+                name="query"
+                placeholder="https://google.com"
+                required
+            >
+            <input
+          type="password"
+          name="password"
+         placeholder="Password (Optional)"
+           >
+             <input
+        type="text"
+        name="customAlias"
+        placeholder="Custom alias (Optional)"
+    >
+
+            <button type="submit">
+                Generate
+            </button>
+
+        </form>
+    </br>
+
+        <% if(locals.message){ %>
+
+<div class="error-box">
+    <%= message %>
+</div>
+
+<% } %>
+
+    </div>
+
+<% if(locals.id){ %>
+
+<div class="success-box">
+
+    <h3>🎉 Short URL Generated</h3>
+
+    <div class="short-url-box">
+
+        <input
+            type="text"
+            id="shortUrl"
+            value="<%= shortUrl %>"
+
+            readonly
+        >
+
+        <button
+            type="button"
+            class="copy-btn"
+            onclick="copyURL()"
+        >
+            Copy
+        </button>
+
+    </div>
+</br>
+
+    <img src="<%= qrCode %>" width="100">
+    <a
+href="<%= qrCode %>"
+download="QRCode.png"
+>
+</br>
+Download QR
+</a>
+
+</div>
+
+<% } %>
+    <% if(locals.urls){ %>
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+
+                    <th>Short ID</th>
+
+                    <th>Original URL</th>
+
+                    <th>Total Clicks</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            <% urls.forEach((url,index)=>{ %>
+
+                <tr>
+
+                    <td><%= index+1 %></td>
+
+                    <td><%= url.ShortId %></td>
+
+                    <td class="url-cell"><%= url.redirectURL %></td>
+
+                    <td><%= url.TotalClicks %></td>
+
+                </tr>
+
+            <% }) %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <% } %>
+
+</div>
+
+</body>
+<script>
+function copyURL(){
+
+    const input = document.getElementById("shortUrl");
+
+    navigator.clipboard.writeText(input.value);
+
+    const btn = document.querySelector(".copy-btn");
+
+    btn.innerText = "Copied ✓";
+    btn.classList.add("copied");
+
+    setTimeout(() => {
+        btn.innerText = "Copy";
+        btn.classList.remove("copied");
+    },2000);
+
+}
+</script>
+</html>
