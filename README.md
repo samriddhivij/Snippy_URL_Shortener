@@ -94,14 +94,3 @@ connection.js   MongoDB connection helper
 redisClient.js  Redis client
 index.js        Express setup and server entry point
 ```
-
-## Current limitations
-
-This is a project implementation, not a production-ready public shortener. Before deploying it for real users, address the following:
-
-- Account passwords are stored and compared in plain text; hash them on signup and compare hashes on login.
-- Password verification for protected links is under the `NORMAL`-only `/url` router, so a visitor must be signed in as a normal user to submit the password. Update the route authorization if protected links should work for anyone with the password.
-- Destination URLs and custom aliases need stronger validation. Generated links and server settings use hard-coded local values.
-- Pending visit timestamps are removed from Redis before MongoDB confirms the update; a failed database write can lose those visits. The sync worker also uses `KEYS`, which can become costly as the dataset grows.
-
-There is no automated test suite or npm start script in the supplied project; run it with `node index.js` as shown above.
