@@ -31,7 +31,7 @@ app.use(CheckForAuthentication);
 //routing
 
 app.get("/url/:shortId",handleRedirectUsers);
-app.use("/url",restrictTo(["NORMAL"]),urlRoute);//hard checking
+app.use("/url",urlRoute);//hard checking
 app.use("/",staticRoute);
 app.use("/user",userRoute);
 
